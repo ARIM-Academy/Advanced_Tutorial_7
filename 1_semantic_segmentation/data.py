@@ -15,21 +15,21 @@ from model import *
 from model2 import *
 
 
-Sky = [128,128,128]
-Building = [128,0,0]
-Pole = [192,192,128]
-Road = [128,64,128]
-Pavement = [60,40,222]
-Tree = [128,128,0]
-SignSymbol = [192,128,128]
-Fence = [64,64,128]
-Car = [64,0,128]
-Pedestrian = [64,64,0]
-Bicyclist = [0,128,192]
-Unlabelled = [0,0,0]
+#Sky = [128,128,128]
+#Building = [128,0,0]
+#Pole = [192,192,128]
+#Road = [128,64,128]
+#Pavement = [60,40,222]
+#Tree = [128,128,0]
+#SignSymbol = [192,128,128]
+#Fence = [64,64,128]
+#Car = [64,0,128]
+#Pedestrian = [64,64,0]
+#Bicyclist = [0,128,192]
+#Unlabelled = [0,0,0]
 
-COLOR_DICT = np.array([Sky, Building, Pole, Road, Pavement,
-                          Tree, SignSymbol, Fence, Car, Pedestrian, Bicyclist, Unlabelled])
+#COLOR_DICT = np.array([Sky, Building, Pole, Road, Pavement,
+#                          Tree, SignSymbol, Fence, Car, Pedestrian, Bicyclist, Unlabelled])
 
 
 def adjustData(img,mask,flag_multi_class,num_class):
@@ -117,6 +117,7 @@ def trainGenerator_2(batch_size,train_path,image_folder,mask_folder,aug_dict,ima
         save_prefix  = image_save_prefix,
         seed = seed,
         subset = 'training')
+    
     valid_image_generator = image_datagen.flow_from_directory(
         train_path,
         classes = [image_folder],
@@ -128,6 +129,7 @@ def trainGenerator_2(batch_size,train_path,image_folder,mask_folder,aug_dict,ima
         save_prefix  = image_save_prefix,
         seed = seed,
         subset = 'validation')
+    
     mask_generator = mask_datagen.flow_from_directory(
         train_path,
         classes = [mask_folder],
@@ -139,6 +141,7 @@ def trainGenerator_2(batch_size,train_path,image_folder,mask_folder,aug_dict,ima
         save_prefix  = mask_save_prefix,
         seed = seed,
         subset = 'training')
+    
     valid_mask_generator = mask_datagen.flow_from_directory(
         train_path,
         classes = [mask_folder],
@@ -150,6 +153,7 @@ def trainGenerator_2(batch_size,train_path,image_folder,mask_folder,aug_dict,ima
         save_prefix  = mask_save_prefix,
         seed = seed,
         subset = 'validation')
+    
     train_generator = zip(image_generator, mask_generator)
     for (img,mask) in train_generator:
         img,mask = adjustData(img,mask,flag_multi_class,num_class)
@@ -209,6 +213,7 @@ def validGenerator(batch_size,train_path,image_folder,mask_folder,aug_dict,image
         save_prefix  = mask_save_prefix,
         seed = seed,
         subset = 'validation')
+    
     valid_generator = zip(valid_image_generator, valid_mask_generator)
     for (img,mask) in valid_generator:
         img,mask = adjustData(img,mask,flag_multi_class,num_class)
@@ -216,7 +221,9 @@ def validGenerator(batch_size,train_path,image_folder,mask_folder,aug_dict,image
 
 
 
-def testGenerator(test_path,num_image = 30,target_size = (256,256),flag_multi_class = False,as_gray = True):
+def testGenerator(test_path,num_image = 30,target_size = (256,256),
+                  flag_multi_class = False,as_gray = True):
+    
     path_list = os.listdir(test_path)
     # for i in range(num_image):
     #     img = io.imread(os.path.join(test_path,"%d.png"%i),as_gray = as_gray)
@@ -230,13 +237,14 @@ def testGenerator(test_path,num_image = 30,target_size = (256,256),flag_multi_cl
         img = trans.resize(img,target_size)
         img = np.reshape(img,img.shape+(1,)) if (not flag_multi_class) else img
         img = np.reshape(img,(1,)+img.shape)
-        yield img
+        yield (img,)
 
 
 def geneTrainNpy(image_path,mask_path,flag_multi_class = False,num_class = 2,image_prefix = "image",mask_prefix = "mask",image_as_gray = True,mask_as_gray = True):
     image_name_arr = glob.glob(os.path.join(image_path,"%s*.png"%image_prefix))
     image_arr = []
     mask_arr = []
+    
     for index,item in enumerate(image_name_arr):
         img = io.imread(item,as_gray = image_as_gray)
         img = np.reshape(img,img.shape + (1,)) if image_as_gray else img
