@@ -1,8 +1,0 @@
-Multiple licenses: MIT License
-
-Please check individual folders for LICENSE. The main codes followed MIT License as U-Net.
-
-- Codes in U-Net/MultiResUnet are under MIT License (2019 zhixuhao/2018 Zongwei Zhou)
-- Codes in Pixel-Embedding_UNet are under MIT License (2019 long.chen)
-- Codes in Shape_classification are under MIT License (2021 benjamin.shi)
-
