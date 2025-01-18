@@ -1,0 +1,1 @@
+This folder contains dataset fibre_1crop for instance segmentation of fibres. The original .png images were transformed into .jpg for Mask-RCNN. Masks of train and validation datasets are read from the via_region_data.json in each folder.
