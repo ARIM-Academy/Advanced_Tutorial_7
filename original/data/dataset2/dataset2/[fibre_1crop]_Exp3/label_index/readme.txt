@@ -1,1 +1,0 @@
-This folder contains augmented images for instance segmentation. The index of each instance is stored in pixels. Since the total number of instances in one image is far less than 512, uint8 is enough to store all labels. 
